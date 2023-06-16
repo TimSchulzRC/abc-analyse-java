@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane minHeight="400.0" minWidth="800.0" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="timschulz.abcxyzanalysejava.MainController">
+    <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane>
+            <center>
+                <AnchorPane BorderPane.alignment="CENTER">
+                    <TableView fx:id="rechnungenTable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <columns>
+                            <TableColumn fx:id="rechnrColumn" prefWidth="100.0" text="Rechnungs Nr."/>
+                            <TableColumn fx:id="rechdatColumn" prefWidth="100.0" text="Datum"/>
+                            <TableColumn fx:id="materialColumn" prefWidth="100.0" text="Material"/>
+                            <TableColumn fx:id="lieferantColumn" prefWidth="100.0" text="Lieferant"/>
+                            <TableColumn fx:id="nettoColumn" prefWidth="100.0" text="Netto (€)"/>
+                        </columns>
+                    </TableView>
+                </AnchorPane>
+            </center>
+          <top>
+              <VBox spacing="20.0" BorderPane.alignment="CENTER">
+                  <padding>
+                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                  </padding>
+                  <Label text="Rechnungen">
+                      <font>
+                          <Font size="24.0"/>
+                      </font>
+                  </Label>
+                  <FlowPane hgap="20.0" vgap="20.0">
+                      <DatePicker fx:id="fromDatePicker" onAction="#handleDateSelect" promptText="Startdatum"/>
+                      <DatePicker fx:id="toDatePicker" onAction="#handleDateSelect" promptText="Enddatum"/>
+                      <Button mnemonicParsing="false" onAction="#handleResetDates" text="Zeitraum zurücksetzten"/>
+                  </FlowPane>
+              </VBox>
+          </top>
+        </BorderPane>
+        <BorderPane layoutX="10.0" layoutY="10.0">
+           <center>
+               <AnchorPane BorderPane.alignment="CENTER">
+                   <TableView fx:id="materialsTable" editable="true" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <columns>
+                           <TableColumn fx:id="materialNameColumn" editable="false" sortable="false"
+                                        text="Material"/>
+                           <TableColumn fx:id="klasseColumn" editable="false" sortable="false"
+                                        text="Klasse (ABC)"/>
+                           <TableColumn fx:id="gesamtwertColumn" editable="false" prefWidth="140.0"
+                                        sortable="false" text="Gesamtwert (Netto in €)"/>
+                           <TableColumn fx:id="anteilColumn" editable="false" prefWidth="95.0963134765625"
+                                        sortable="false" text="Wertanteil (%)"/>
+                           <TableColumn fx:id="kumAnteilColumn" editable="false" prefWidth="150.0" sortable="false"
+                                        text="Kommulierter  Anteil (%)"/>
+                       </columns>
+                   </TableView>
+               </AnchorPane>
+           </center>
+           <top>
+               <VBox spacing="20.0" BorderPane.alignment="CENTER">
+                   <padding>
+                       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                   </padding>
+                   <Label text="Materialien">
+                       <font>
+                           <Font size="24.0"/>
+                       </font>
+                   </Label>
+                   <FlowPane>
+                       <VBox>
+                           <Label text="Klasse A"/>
+                           <Slider fx:id="aSlider"/>
+                           <Label fx:id="aLabel" layoutX="10.0" layoutY="26.0"/>
+                       </VBox>
+                       <VBox>
+                           <Label text="Klasse B"/>
+                           <Slider fx:id="bSlider" onDragDetected="#handleSlider"/>
+                           <Label fx:id="bLabel" layoutX="10.0" layoutY="26.0"/>
+                       </VBox>
+                       <VBox>
+                           <Label text="Klasse C"/>
+                           <Slider fx:id="cSlider" onDragDetected="#handleSlider"/>
+                           <Label fx:id="cLabel" layoutX="10.0" layoutY="26.0"/>
+                       </VBox>
+                       <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                             text="Für korrektes Funktionieren des Programmes sollten die Werte aller Klassen in Summe 100% ergeben."
+                             wrappingWidth="300.0"/>
+                   </FlowPane>
+               </VBox>
+           </top>
+        </BorderPane>
+    </SplitPane>
+</AnchorPane>
