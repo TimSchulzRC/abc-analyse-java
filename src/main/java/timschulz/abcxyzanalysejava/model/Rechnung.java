@@ -5,20 +5,28 @@ import java.util.Date;
 
 public class Rechnung {
     private static final ArrayList<Rechnung> rechnungen = new ArrayList<>();
-    private String lieferant;
+    private Lieferant lieferant;
     private String rechnr;
     private Date rechdat;
     private float netto;
-    private int ust;
+    private int ust = 19;
     private String material;
 
     public Rechnung() {
         rechnungen.add(this);
     }
+    public Rechnung(Lieferant lieferant, String rechnr, Date rechdat, float netto, String material) {
+        this.lieferant = lieferant;
+        this.rechnr = rechnr;
+        this.rechdat = rechdat;
+        this.netto = netto;
+        this.material = material;
+        rechnungen.add(this);
+    }
     public static ArrayList<Rechnung> getRechnungen() {
         return rechnungen;
     }
-    public void setLieferant(String lieferant) {
+    public void setLieferant(Lieferant lieferant) {
         this.lieferant = lieferant;
     }
     public void setRechnr(String rechnr) {
@@ -36,8 +44,11 @@ public class Rechnung {
     public void setMaterial(String material) {
         this.material = material;
     }
-    public String getLieferant() {
+    public Lieferant getLieferant() {
         return lieferant;
+    }
+    public String getLieferantName() {
+        return lieferant.getName();
     }
     public String getRechnr() {
         return rechnr;
@@ -47,6 +58,9 @@ public class Rechnung {
     }
     public float getNetto() {
         return netto;
+    }
+    public int getUst() {
+        return ust;
     }
     public String getMaterial() {
         return material;

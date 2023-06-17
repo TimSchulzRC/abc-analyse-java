@@ -14,6 +14,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import timschulz.abcxyzanalysejava.adapter.RechnungAdapter;
+import timschulz.abcxyzanalysejava.model.Lieferant;
 import timschulz.abcxyzanalysejava.model.Rechnung;
 
 public class Database {
@@ -183,7 +184,7 @@ public class Database {
     
     public static void loadRechnungen () {
         String sql = """
-                SELECT rechnung.rechnr, rechnung.rechdat, rechnung.netto, rechnung.ust, rechnung.material, lieferant.firma
+                SELECT rechnung.rechnr, rechnung.rechdat, rechnung.netto, rechnung.ust, rechnung.material, lieferant.firma, lieferung.lief_id
                 FROM rechnung
                 INNER JOIN lieferung ON rechnung.liefnr = lieferung.liefnr
                 INNER JOIN lieferant ON lieferung.lief_id = lieferant.lief_id
@@ -198,7 +199,14 @@ public class Database {
                 rechnung.setNetto(rs.getFloat("netto"));
                 rechnung.setUst(rs.getInt("ust"));
                 rechnung.setMaterial(rs.getString("material"));
-                rechnung.setLieferant(rs.getString("firma"));
+                Lieferant lieferant = Lieferant.getLieferanten().stream().filter(l -> {
+                    try {
+                        return l.getLief_id().equals(rs.getString("lief_id"));
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).findFirst().orElse(null);
+                rechnung.setLieferant(lieferant);
                 new RechnungAdapter(rechnung);
             }
         } catch (SQLException e) {
@@ -274,8 +282,62 @@ public class Database {
             rechnung.setNetto(rs.getFloat("netto"));
             rechnung.setUst(rs.getInt("ust"));
             rechnung.setMaterial(rs.getString("material"));
-            rechnung.setLieferant(rs.getString("firma"));
+            Lieferant lieferant = Lieferant.getLieferanten().stream().filter(l -> {
+                try {
+                    return l.getLief_id().equals(rs.getString("lief_id"));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }).findFirst().orElse(null);
+            rechnung.setLieferant(lieferant);
             new RechnungAdapter(rechnung);
+        }
+    }
+
+    public static void loadLieferanten() {
+        String sql = """
+                SELECT lieferant.firma, lieferant.lief_id
+                FROM lieferant;
+                """;
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Lieferant lieferant = new Lieferant();
+                lieferant.setLief_id(rs.getString("lief_id"));
+                lieferant.setName(rs.getString("firma"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void addRechnung(Rechnung rechnung) {
+        String sqlLieferung = """
+                INSERT INTO lieferung(liefnr, lief_id, liefdat)
+                VALUES(?,?, ?);
+                """;
+        String sql = """
+                INSERT INTO rechnung(rechnr, rechdat, netto, ust, material, liefnr)
+                VALUES(?,?,?,?,?,?);
+                """;
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlLieferung)) {
+            pstmt.setString(1, rechnung.getRechnr());
+            pstmt.setString(2, rechnung.getLieferant().getLief_id());
+            pstmt.setDate(3, new java.sql.Date(rechnung.getRechdat().getTime()));
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, rechnung.getRechnr());
+            pstmt.setDate(2, new java.sql.Date(rechnung.getRechdat().getTime()));
+            pstmt.setFloat(3, rechnung.getNetto());
+            pstmt.setInt(4, rechnung.getUst());
+            pstmt.setString(5, rechnung.getMaterial());
+            pstmt.setString(6, rechnung.getRechnr());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 

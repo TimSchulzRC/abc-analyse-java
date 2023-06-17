@@ -18,7 +18,7 @@ public class RechnungAdapter {
     private final StringProperty materialProperty;
 
     public RechnungAdapter(Rechnung rechnung) {
-        this.lieferantProperty = new SimpleStringProperty(rechnung.getLieferant());
+        this.lieferantProperty = new SimpleStringProperty(rechnung.getLieferantName());
         this.rechnrProperty = new SimpleStringProperty(rechnung.getRechnr());
         String dateString = new SimpleDateFormat("dd.MM.yyyy").format(rechnung.getRechdat());
         this.rechdatProperty = new SimpleStringProperty(dateString);
@@ -48,5 +48,8 @@ public class RechnungAdapter {
 
     public static void clear() {
         rechnungen.clear();
+    }
+    public static void addRechnung(Rechnung rechnung) {
+        new RechnungAdapter(rechnung);
     }
 }
