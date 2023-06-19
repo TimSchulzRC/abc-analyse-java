@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jlink" name="runtime-image">
+    <output-path>$PROJECT_DIR$/out/artifacts/runtime_image</output-path>
+    <root id="root" />
+  </artifact>
+</component>

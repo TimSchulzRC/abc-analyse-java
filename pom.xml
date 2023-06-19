@@ -34,6 +34,12 @@
       <artifactId>javafx-fxml</artifactId>
       <version>17.0.6</version>
     </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>17.0.6</version>
+    </dependency>
+
                             <dependency>
       <groupId>org.kordamp.bootstrapfx</groupId>
       <artifactId>bootstrapfx-core</artifactId>
@@ -94,35 +100,35 @@
           <target>17</target>
         </configuration>
             </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <version>3.4.1</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>shade</goal>
-                </goals>
-                <configuration>
-                  <shadedArtifactAttached>true</shadedArtifactAttached>
-                  <artifactSet>
-                    <includes>
-                      <include>com.opencsv</include>
-                    </includes>
-                    <includes>
-                      <include>org.sqlite</include>
-                    </includes>
-                  </artifactSet>
-                  <transformers>
-                    <transformer implementation=
-                                         "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                      <mainClass>timschulz.abcanalysejava.Main</mainClass>
-                    </transformer>
-                  </transformers>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+<!--          <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-shade-plugin</artifactId>-->
+<!--            <version>3.4.1</version>-->
+<!--            <executions>-->
+<!--              <execution>-->
+<!--                <goals>-->
+<!--                  <goal>shade</goal>-->
+<!--                </goals>-->
+<!--                <configuration>-->
+<!--                  <shadedArtifactAttached>true</shadedArtifactAttached>-->
+<!--                  <artifactSet>-->
+<!--                    <includes>-->
+<!--                      <include>com.opencsv</include>-->
+<!--                    </includes>-->
+<!--                    <includes>-->
+<!--                      <include>org.sqlite</include>-->
+<!--                    </includes>-->
+<!--                  </artifactSet>-->
+<!--                  <transformers>-->
+<!--                    <transformer implementation=-->
+<!--                                         "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--                      <mainClass>timschulz.abcanalysejava.Main</mainClass>-->
+<!--                    </transformer>-->
+<!--                  </transformers>-->
+<!--                </configuration>-->
+<!--              </execution>-->
+<!--            </executions>-->
+<!--          </plugin>-->
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
