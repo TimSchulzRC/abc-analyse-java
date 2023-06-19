@@ -7,7 +7,7 @@
   <groupId>timschulz</groupId>
   <artifactId>abc-java</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>abc-xyz-analyse-java</name>
+  <name>abc-analyse-java</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -79,6 +79,10 @@
       <resource>
         <directory>src/main/resources</directory>
       </resource>
+      <resource>
+        <directory>data</directory>
+        <targetPath>data</targetPath>
+      </resource>
     </resources>
         <plugins>
             <plugin>
@@ -93,6 +97,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
+            <version>3.4.1</version>
             <executions>
               <execution>
                 <goals>
@@ -111,7 +116,7 @@
                   <transformers>
                     <transformer implementation=
                                          "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                      <mainClass>timschulz.abcxyzanalysejava.Main</mainClass>
+                      <mainClass>timschulz.abcanalysejava.Main</mainClass>
                     </transformer>
                   </transformers>
                 </configuration>
@@ -127,13 +132,14 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>timschulz.abcxyzanalysejava/timschulz.abcxyzanalysejava.MainApplication</mainClass>
+              <mainClass>timschulz.abcanalysejava.Main</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
               <noManPages>true</noManPages>
               <stripDebug>true</stripDebug>
               <noHeaderFiles>true</noHeaderFiles>
+              <options>-cp ../lib/opencsv-5.7.1.jar</options>
             </configuration>
           </execution>
         </executions>
@@ -143,7 +149,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>timschulz.abcxyzanalysejava.Main</mainClass>
+                  <mainClass>timschulz.abcanalysejava.Main</mainClass>
                 </manifest>
               </archive>
               <descriptorRefs>
@@ -172,26 +178,39 @@
                 </goals>
                 <configuration>
                   <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                  <overWriteReleases>false</overWriteReleases>
-                  <overWriteSnapshots>false</overWriteSnapshots>
+                  <overWriteReleases>true</overWriteReleases>
+                  <overWriteSnapshots>true</overWriteSnapshots>
                   <overWriteIfNewer>true</overWriteIfNewer>
                 </configuration>
               </execution>
             </executions>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.opencsv</groupId>
+                  <artifactId>opencsv</artifactId>
+                  <version>5.7.1</version>
+                  <type>jar</type>
+                  <destFileName>opencsv-5.7.1.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
+            <version>3.3.0</version>
             <configuration>
               <archive>
                 <manifest>
                   <addClasspath>true</addClasspath>
                   <classpathPrefix>lib/</classpathPrefix>
-                  <mainClass>theMainClass</mainClass>
+                  <mainClass>timschulz.abcanalysejava.Main</mainClass>
                 </manifest>
               </archive>
             </configuration>
           </plugin>
+
           </plugins>
   </build>
 

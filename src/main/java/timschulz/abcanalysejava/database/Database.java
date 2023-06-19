@@ -1,4 +1,4 @@
-package timschulz.abcxyzanalysejava.database;
+package timschulz.abcanalysejava.database;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,13 +13,13 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
-import timschulz.abcxyzanalysejava.adapter.RechnungAdapter;
-import timschulz.abcxyzanalysejava.model.Lieferant;
-import timschulz.abcxyzanalysejava.model.Rechnung;
+import timschulz.abcanalysejava.adapter.RechnungAdapter;
+import timschulz.abcanalysejava.model.Lieferant;
+import timschulz.abcanalysejava.model.Rechnung;
 
 public class Database {
     private static Connection connection;
-        private static  final String CONNECTION_STRING = "jdbc:sqlite:src/main/database/database.db";
+        private static  final String CONNECTION_STRING = "jdbc:sqlite:data/database.db";
 
 
 
@@ -89,7 +89,7 @@ public class Database {
                     new CSVParserBuilder()
                             .withSeparator(';')
                             .build();
-            CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/lieferant.csv")).withCSVParser(parser).withSkipLines(1).build();
+            CSVReader reader = new CSVReaderBuilder(new FileReader("/data/lieferant.csv")).withCSVParser(parser).withSkipLines(1).build();
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals("")) {
@@ -114,7 +114,7 @@ public class Database {
                     new CSVParserBuilder()
                             .withSeparator(';')
                             .build();
-            CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/lieferung.csv")).withCSVParser(parser).withSkipLines(1).build();
+            CSVReader reader = new CSVReaderBuilder(new FileReader("/data/lieferung.csv")).withCSVParser(parser).withSkipLines(1).build();
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals("")) {
@@ -141,7 +141,7 @@ public class Database {
                     new CSVParserBuilder()
                             .withSeparator(';')
                             .build();
-            CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/rechnung.csv")).withCSVParser(parser).withSkipLines(1).build();
+            CSVReader reader = new CSVReaderBuilder(new FileReader("/data/rechnung.csv")).withCSVParser(parser).withSkipLines(1).build();
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals("")) {

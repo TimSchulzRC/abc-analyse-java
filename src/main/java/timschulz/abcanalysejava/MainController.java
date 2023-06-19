@@ -1,4 +1,4 @@
-package timschulz.abcxyzanalysejava;
+package timschulz.abcanalysejava;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -6,13 +6,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
-import timschulz.abcxyzanalysejava.adapter.MaterialAdapter;
-import timschulz.abcxyzanalysejava.adapter.RechnungAdapter;
-import timschulz.abcxyzanalysejava.database.Database;
-import timschulz.abcxyzanalysejava.model.ABC;
-import timschulz.abcxyzanalysejava.model.Lieferant;
-import timschulz.abcxyzanalysejava.model.Material;
-import timschulz.abcxyzanalysejava.model.Rechnung;
+import timschulz.abcanalysejava.adapter.MaterialAdapter;
+import timschulz.abcanalysejava.adapter.RechnungAdapter;
+import timschulz.abcanalysejava.database.Database;
+import timschulz.abcanalysejava.model.ABC;
+import timschulz.abcanalysejava.model.Lieferant;
+import timschulz.abcanalysejava.model.Material;
+import timschulz.abcanalysejava.model.Rechnung;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

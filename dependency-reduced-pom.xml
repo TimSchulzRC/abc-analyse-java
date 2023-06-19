@@ -32,7 +32,7 @@
               </artifactSet>
               <transformers>
                 <transformer>
-                  <mainClass>timschulz.abcxyzanalysejava.Main</mainClass>
+                  <mainClass>timschulz.abcanalysejava.Main</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -47,7 +47,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>timschulz.abcxyzanalysejava/timschulz.abcxyzanalysejava.MainApplication</mainClass>
+              <mainClass>timschulz.abcxyzanalysejava/timschulz.abcanalysejava.MainApplication</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

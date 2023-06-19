@@ -1,4 +1,4 @@
-package timschulz.abcxyzanalysejava.model;
+package timschulz.abcanalysejava.model;
 
 public class ABC {
     private static int a = 75;

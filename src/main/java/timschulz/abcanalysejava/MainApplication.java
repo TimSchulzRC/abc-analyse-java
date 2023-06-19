@@ -1,4 +1,4 @@
-package timschulz.abcxyzanalysejava;
+package timschulz.abcanalysejava;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

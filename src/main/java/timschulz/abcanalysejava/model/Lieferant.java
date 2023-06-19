@@ -1,4 +1,4 @@
-package timschulz.abcxyzanalysejava.model;
+package timschulz.abcanalysejava.model;
 
 import java.util.ArrayList;
 

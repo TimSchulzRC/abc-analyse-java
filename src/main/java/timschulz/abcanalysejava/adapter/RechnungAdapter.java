@@ -1,10 +1,10 @@
-package timschulz.abcxyzanalysejava.adapter;
+package timschulz.abcanalysejava.adapter;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import timschulz.abcxyzanalysejava.model.Rechnung;
+import timschulz.abcanalysejava.model.Rechnung;
 
 import java.text.SimpleDateFormat;
 
