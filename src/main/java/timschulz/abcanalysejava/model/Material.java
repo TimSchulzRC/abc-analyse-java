@@ -5,11 +5,14 @@ import java.util.HashMap;
 
 public class Material {
     public static ArrayList<Material> materials = new ArrayList<>();
+    private final ArrayList<Rechnung> rechnungen = new ArrayList<>();
     private String material;
     private char klasse;
     private int gesamtwertCt;
     private float anteil;
     private float kumAnteil;
+    private float category;
+    private double varK;
 
     public static void createMaterialsFromRechnungen(ArrayList<Rechnung> rechnungen) {
         HashMap<String, Material> materialsMap = new HashMap<>();
@@ -24,13 +27,15 @@ public class Material {
                 material.setGesamtwertCt((int) (rechnung.getNetto()*100));
                 materialsMap.put(materialKey, material);
             }
+            materialsMap.get(materialKey).addRechnung(rechnung);
         }
+
         materials.addAll(materialsMap.values());
-        
+
         materials.sort((Material m1, Material m2)-> Float.compare(m2.getGesamtwertCt(), m1.getGesamtwertCt()));
 
-        int materialValueSumCt = materials.stream().reduce(0, (sum, material) -> sum + material.getGesamtwertCt(), Integer::sum);
 
+        int materialValueSumCt = materials.stream().reduce(0, (sum, material) -> sum + material.getGesamtwertCt(), Integer::sum);
         float kumuliert = 0;
         for (Material material : materials) {
             float anteil = (float)((float) Math.round((((double) material.getGesamtwertCt() / materialValueSumCt) * 100) * 100.0) / 100.0);
@@ -44,6 +49,15 @@ public class Material {
             } else {
                 material.setKlasse('C');
             }
+            System.out.println(material.getRechnungen().size());
+            double mittelwert = material.getRechnungen().stream().reduce(
+                    0.0,
+                    (sum, rechnung) -> sum + rechnung.getNetto(),
+                    Double::sum
+            )/material.getRechnungen().size();
+            double varianz = material.getRechnungen().stream().mapToDouble(rechnung -> Math.pow(material.getRechnungen().size(), 2)).sum();
+            double varK = (Math.sqrt(varianz) / mittelwert) * 100;
+            material.setVarK(varK);
         }
     }
 
@@ -83,7 +97,20 @@ public class Material {
     public void setKumAnteil(float kumAnteil) {
         this.kumAnteil = kumAnteil;
     }
+    public void addRechnung(Rechnung rechnung) {
+        rechnungen.add(rechnung);
+    }
+    public ArrayList<Rechnung> getRechnungen() {
+        return rechnungen;
+    }
+    public void setVarK(double varK) {
+        this.varK = varK;
+    }
     public static void clear() {
         materials.clear();
+    }
+
+    public double getVarK() {
+        return varK;
     }
 }

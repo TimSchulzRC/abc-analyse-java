@@ -19,9 +19,7 @@ import timschulz.abcanalysejava.model.Rechnung;
 
 public class Database {
     private static Connection connection;
-        private static  final String CONNECTION_STRING = "jdbc:sqlite:data/database.db";
-
-
+    private static  final String CONNECTION_STRING = "jdbc:sqlite:data/database.db";
 
     private static Connection getConnection() {
             try {
@@ -89,7 +87,7 @@ public class Database {
                     new CSVParserBuilder()
                             .withSeparator(';')
                             .build();
-            CSVReader reader = new CSVReaderBuilder(new FileReader("/data/lieferant.csv")).withCSVParser(parser).withSkipLines(1).build();
+            CSVReader reader = new CSVReaderBuilder(new FileReader("data/lieferant.csv")).withCSVParser(parser).withSkipLines(1).build();
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals("")) {
@@ -114,7 +112,7 @@ public class Database {
                     new CSVParserBuilder()
                             .withSeparator(';')
                             .build();
-            CSVReader reader = new CSVReaderBuilder(new FileReader("/data/lieferung.csv")).withCSVParser(parser).withSkipLines(1).build();
+            CSVReader reader = new CSVReaderBuilder(new FileReader("data/lieferung.csv")).withCSVParser(parser).withSkipLines(1).build();
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals("")) {
@@ -141,7 +139,7 @@ public class Database {
                     new CSVParserBuilder()
                             .withSeparator(';')
                             .build();
-            CSVReader reader = new CSVReaderBuilder(new FileReader("/data/rechnung.csv")).withCSVParser(parser).withSkipLines(1).build();
+            CSVReader reader = new CSVReaderBuilder(new FileReader("data/rechnung.csv")).withCSVParser(parser).withSkipLines(1).build();
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals("")) {
@@ -184,7 +182,7 @@ public class Database {
     
     public static void loadRechnungen () {
         String sql = """
-                SELECT rechnung.rechnr, rechnung.rechdat, rechnung.netto, rechnung.ust, rechnung.material, lieferant.firma, lieferung.lief_id
+                SELECT rechnung.rechnr, rechnung.rechdat, rechnung.netto, rechnung.ust, rechnung.material, lieferant.firma
                 FROM rechnung
                 INNER JOIN lieferung ON rechnung.liefnr = lieferung.liefnr
                 INNER JOIN lieferant ON lieferung.lief_id = lieferant.lief_id
@@ -199,14 +197,7 @@ public class Database {
                 rechnung.setNetto(rs.getFloat("netto"));
                 rechnung.setUst(rs.getInt("ust"));
                 rechnung.setMaterial(rs.getString("material"));
-                Lieferant lieferant = Lieferant.getLieferanten().stream().filter(l -> {
-                    try {
-                        return l.getLief_id().equals(rs.getString("lief_id"));
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).findFirst().orElse(null);
-                rechnung.setLieferant(lieferant);
+                rechnung.setLieferant(rs.getString("firma"));
                 new RechnungAdapter(rechnung);
             }
         } catch (SQLException e) {
@@ -282,14 +273,6 @@ public class Database {
             rechnung.setNetto(rs.getFloat("netto"));
             rechnung.setUst(rs.getInt("ust"));
             rechnung.setMaterial(rs.getString("material"));
-            Lieferant lieferant = Lieferant.getLieferanten().stream().filter(l -> {
-                try {
-                    return l.getLief_id().equals(rs.getString("lief_id"));
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }).findFirst().orElse(null);
-            rechnung.setLieferant(lieferant);
             new RechnungAdapter(rechnung);
         }
     }
@@ -312,22 +295,10 @@ public class Database {
     }
 
     public static void addRechnung(Rechnung rechnung) {
-        String sqlLieferung = """
-                INSERT INTO lieferung(liefnr, lief_id, liefdat)
-                VALUES(?,?, ?);
-                """;
         String sql = """
                 INSERT INTO rechnung(rechnr, rechdat, netto, ust, material, liefnr)
                 VALUES(?,?,?,?,?,?);
                 """;
-        try (PreparedStatement pstmt = connection.prepareStatement(sqlLieferung)) {
-            pstmt.setString(1, rechnung.getRechnr());
-            pstmt.setString(2, rechnung.getLieferant().getLief_id());
-            pstmt.setDate(3, new java.sql.Date(rechnung.getRechdat().getTime()));
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, rechnung.getRechnr());
             pstmt.setDate(2, new java.sql.Date(rechnung.getRechdat().getTime()));
