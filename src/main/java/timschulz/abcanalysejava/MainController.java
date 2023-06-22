@@ -62,13 +62,9 @@ public class MainController {
     @FXML
     private Slider ySlider;
     @FXML
-    private Slider zSlider;
-    @FXML
     private Label xLabel;
     @FXML
     private Label yLabel;
-    @FXML
-    private Label zLabel;
     @FXML
     private Button resetSlidersButton;
 
@@ -118,11 +114,6 @@ public class MainController {
             }
         });
         ySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.intValue() != oldValue.intValue()) {
-                handleSlider();
-            }
-        });
-        zSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() != oldValue.intValue()) {
                 handleSlider();
             }
