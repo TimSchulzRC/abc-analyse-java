@@ -75,7 +75,6 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("Table lieferant is empty: " + dataTableIsEmpty("lieferant"));
         if(dataTableIsEmpty("lieferant")) insertDataLieferant();
         if(dataTableIsEmpty("lieferung")) insertDataLieferung();
         if(dataTableIsEmpty("rechnung")) insertDataRechnung();

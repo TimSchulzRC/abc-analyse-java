@@ -164,19 +164,21 @@ public class MainController {
         LocalDate fromLocalDate = fromDatePicker.getValue();
         LocalDate toLocalDate = toDatePicker.getValue();
 
-        Database.setFrom(Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        Database.setTo(Date.from(toLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         if (fromDatePicker.getValue() != null && toDatePicker.getValue() != null) {
+            Database.setFrom(Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            Database.setTo(Date.from(toLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Date fromDate = Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date toDate = Date.from(toLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Database.loadRechnungen(fromDate, toDate);
         }
         if (fromDatePicker.getValue() != null && toDatePicker.getValue() == null) {
+            Database.setFrom(Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Date fromDate = Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Database.loadRechnungenAfter(fromDate);
         }
         if (fromDatePicker.getValue() == null && toDatePicker.getValue() != null) {
+            Database.setTo(Date.from(toLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Date toDate = Date.from(toLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Database.loadRechnungenBefore(toDate);
         }
