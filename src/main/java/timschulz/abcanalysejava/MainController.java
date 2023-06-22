@@ -43,7 +43,9 @@ public class MainController {
     @FXML
     private TableColumn<MaterialAdapter, String> kumAnteilColumn;
     @FXML
-    private TableColumn<MaterialAdapter, String> varK;
+    private TableColumn<MaterialAdapter, String> varKColumn;
+    @FXML
+    private TableColumn<MaterialAdapter, String> categoryColumn;
 
     @FXML
     private Slider aSlider;
@@ -65,8 +67,6 @@ public class MainController {
     private Label xLabel;
     @FXML
     private Label yLabel;
-    @FXML
-    private Button resetSlidersButton;
 
 
     public void initialize() {
@@ -83,7 +83,8 @@ public class MainController {
         gesamtwertColumn.setCellValueFactory(cellData -> cellData.getValue().gesamtwertProperty());
         anteilColumn.setCellValueFactory(cellData -> cellData.getValue().anteilProperty());
         kumAnteilColumn.setCellValueFactory(cellData -> cellData.getValue().kumAnteilProperty());
-        varK.setCellValueFactory(cellData -> cellData.getValue().varKProperty());
+        varKColumn.setCellValueFactory(cellData -> cellData.getValue().varKProperty());
+        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().categoryProperty());
         materialsTable.setItems(MaterialAdapter.getMaterials());
         MaterialAdapter.createMaterialAdapters();
 
@@ -130,10 +131,9 @@ public class MainController {
         cLabel.setText(ABCXYZ.getC() + " %");
 
         xSlider.setMin(0);
-        ySlider.setMin(0);
-        xSlider.setMax(ABCXYZ.getY());
-        ySlider.setMin(ABCXYZ.getX());
-        ySlider.setMax(ABCXYZ.getZ());
+        xSlider.setMax(ABCXYZ.getY()-1);
+        ySlider.setMin(ABCXYZ.getX()+1);
+        ySlider.setMax(100);
         xSlider.setValue(ABCXYZ.getX());
         ySlider.setValue(ABCXYZ.getY());
         xLabel.setText(ABCXYZ.getX() + " %");
@@ -146,7 +146,6 @@ public class MainController {
         ABCXYZ.setC(10);
         ABCXYZ.setX(25);
         ABCXYZ.setY(50);
-        ABCXYZ.setZ(50);
         updateSliders();
         MaterialAdapter.createMaterialAdapters();
     }
@@ -155,6 +154,8 @@ public class MainController {
         ABCXYZ.setA((int) aSlider.getValue());
         ABCXYZ.setB((int) bSlider.getValue());
         ABCXYZ.setC((int) cSlider.getValue());
+        ABCXYZ.setX((int) xSlider.getValue());
+        ABCXYZ.setY((int) ySlider.getValue());
 
         updateSliders();
         MaterialAdapter.createMaterialAdapters();

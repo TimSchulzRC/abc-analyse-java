@@ -13,7 +13,7 @@ public class Material {
     private int gesamtwertCt;
     private float anteil;
     private float kumAnteil;
-    private float category;
+    private char category;
     private double varK;
 
     public static void createMaterialsFromRechnungen(ArrayList<Rechnung> rechnungen) {
@@ -80,6 +80,13 @@ public class Material {
             double varK = (standardabweichung / average)*100;
 //            System.out.println("varK: " + varK);
             material.setVarK(varK);
+            if(varK<ABCXYZ.getX()) {
+                material.setCategory('X');
+            } else if(varK>=ABCXYZ.getX() && varK<ABCXYZ.getY()) {
+                material.setCategory('Y');
+            } else if(varK>=ABCXYZ.getY()) {
+                material.setCategory('Z');
+            }
         }
     }
 
@@ -128,11 +135,17 @@ public class Material {
     public void setVarK(double varK) {
         this.varK = varK;
     }
+    public double getVarK() {
+        return varK;
+    }
+    public void setCategory(char category) {
+        this.category = category;
+    }
+    public char getCategory() {
+        return category;
+    }
     public static void clear() {
         materials.clear();
     }
 
-    public double getVarK() {
-        return varK;
-    }
 }

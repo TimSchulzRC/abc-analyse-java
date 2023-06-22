@@ -6,7 +6,6 @@ public class ABCXYZ {
     private static int c = 5;
     private static int x = 25;
     private static int y = 50;
-    private static int z = 50;
 
     public static int getA() {
         return a;
@@ -37,12 +36,6 @@ public class ABCXYZ {
     }
     public static void setY(int y) {
         ABCXYZ.y = y;
-    }
-    public static int getZ() {
-        return z;
-    }
-    public static void setZ(int z) {
-        ABCXYZ.z = z;
     }
 
 }

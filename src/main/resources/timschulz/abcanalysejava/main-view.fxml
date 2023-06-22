@@ -58,8 +58,8 @@
                            <TableColumn fx:id="gesamtwertColumn" editable="false" prefWidth="140.0" text="Gesamtwert (Netto in €)" />
                            <TableColumn fx:id="anteilColumn" editable="false" prefWidth="95.0963134765625" text="Wertanteil (%)" />
                      <TableColumn fx:id="kumAnteilColumn" editable="false" prefWidth="95.0963134765625" text="Kummulierter Anteil (%)" />
-                     <TableColumn fx:id="anteilColumn1" editable="false" prefWidth="95.0963134765625" text="Kategorie (XYZ)" />
-                     <TableColumn fx:id="varK" editable="false" prefWidth="95.0963134765625" text="Varianzkoefizent (VK)" />
+                     <TableColumn fx:id="categoryColumn" editable="false" prefWidth="95.0963134765625" text="Kategorie (XYZ)" />
+                     <TableColumn fx:id="varKColumn" editable="false" prefWidth="95.0963134765625" text="Varianzkoefizent (VK)" />
                        </columns>
                    </TableView>
                </AnchorPane>
@@ -91,25 +91,19 @@
                            <Label fx:id="cLabel" layoutX="10.0" layoutY="26.0" />
                        </VBox>
                    </FlowPane>
-               <FlowPane layoutX="30.0" layoutY="79.0">
-                  <children>
-                     <VBox>
-                        <children>
-                           <Label text="Grenze X und Y" />
-                           <Slider fx:id="xSlider" />
-                           <Label layoutX="10.0" layoutY="26.0" fx:id="xLabel" />
-                        </children>
-                     </VBox>
-                     <VBox>
-                        <children>
-                           <Label text="Grenze Y und Z" />
-                           <Slider fx:id="ySlider" onDragDetected="#handleSlider" />
-                           <Label fx:id="yLabel" layoutX="10.0" layoutY="26.0" />
-                        </children>
-                     </VBox>
-                  </children>
-               </FlowPane>
-               <Button fx:id="resetSlidersButton" mnemonicParsing="false" text="Zurücksetzen" />
+                   <FlowPane layoutX="30.0" layoutY="79.0">
+                       <VBox>
+                           <Label text="Grenze X und Y"/>
+                           <Slider fx:id="xSlider"/>
+                           <Label layoutX="10.0" layoutY="26.0" fx:id="xLabel"/>
+                       </VBox>
+                       <VBox>
+                           <Label text="Grenze Y und Z"/>
+                           <Slider fx:id="ySlider" onDragDetected="#handleSlider"/>
+                           <Label fx:id="yLabel" layoutX="10.0" layoutY="26.0"/>
+                       </VBox>
+                   </FlowPane>
+               <Button mnemonicParsing="false" onAction="#handleResetSliders" text="Zurücksetzen" />
                </VBox>
            </top>
         </BorderPane>
