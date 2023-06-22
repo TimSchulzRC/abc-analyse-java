@@ -53,12 +53,13 @@
                <AnchorPane BorderPane.alignment="CENTER">
                    <TableView fx:id="materialsTable" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                        <columns>
-                           <TableColumn fx:id="materialNameColumn" editable="false" sortable="false" text="Material" />
-                           <TableColumn fx:id="klasseColumn" editable="false" sortable="false" text="Klasse (ABC)" />
-                           <TableColumn fx:id="gesamtwertColumn" editable="false" prefWidth="140.0" sortable="false" text="Gesamtwert (Netto in €)" />
-                           <TableColumn fx:id="anteilColumn" editable="false" prefWidth="95.0963134765625" sortable="false" text="Wertanteil (%)" />
-                     <TableColumn fx:id="anteilColumn1" editable="false" prefWidth="95.0963134765625" sortable="false" text="Kategorie (XYZ)" />
-                     <TableColumn fx:id="varK" editable="false" prefWidth="95.0963134765625" sortable="false" text="Varianzkoefizent (VK)" />
+                           <TableColumn fx:id="materialNameColumn" editable="false" text="Material" />
+                           <TableColumn fx:id="klasseColumn" editable="false" text="Klasse (ABC)" />
+                           <TableColumn fx:id="gesamtwertColumn" editable="false" prefWidth="140.0" text="Gesamtwert (Netto in €)" />
+                           <TableColumn fx:id="anteilColumn" editable="false" prefWidth="95.0963134765625" text="Wertanteil (%)" />
+                     <TableColumn fx:id="kumAnteilColumn" editable="false" prefWidth="95.0963134765625" text="Kummulierter Anteil (%)" />
+                     <TableColumn fx:id="anteilColumn1" editable="false" prefWidth="95.0963134765625" text="Kategorie (XYZ)" />
+                     <TableColumn fx:id="varK" editable="false" prefWidth="95.0963134765625" text="Varianzkoefizent (VK)" />
                        </columns>
                    </TableView>
                </AnchorPane>
@@ -94,27 +95,21 @@
                   <children>
                      <VBox>
                         <children>
-                           <Label text="Kategorie X" />
-                           <Slider fx:id="aSlider1" />
-                           <Label fx:id="aLabel1" layoutX="10.0" layoutY="26.0" />
+                           <Label text="Grenze X und Y" />
+                           <Slider fx:id="xSlider" />
+                           <Label layoutX="10.0" layoutY="26.0" fx:id="xLabel" />
                         </children>
                      </VBox>
                      <VBox>
                         <children>
-                           <Label text="Kategorie Y" />
-                           <Slider fx:id="bSlider1" onDragDetected="#handleSlider" />
-                           <Label fx:id="bLabel1" layoutX="10.0" layoutY="26.0" />
-                        </children>
-                     </VBox>
-                     <VBox>
-                        <children>
-                           <Label text="Kategorie Z" />
-                           <Slider fx:id="cSlider1" onDragDetected="#handleSlider" />
-                           <Label fx:id="cLabel1" layoutX="10.0" layoutY="26.0" />
+                           <Label text="Grenze Y und Z" />
+                           <Slider fx:id="ySlider" onDragDetected="#handleSlider" />
+                           <Label fx:id="yLabel" layoutX="10.0" layoutY="26.0" />
                         </children>
                      </VBox>
                   </children>
                </FlowPane>
+               <Button fx:id="resetSlidersButton" mnemonicParsing="false" text="Zurücksetzen" />
                </VBox>
            </top>
         </BorderPane>

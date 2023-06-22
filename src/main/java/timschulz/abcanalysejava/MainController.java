@@ -5,7 +5,7 @@ import javafx.scene.control.*;
 import timschulz.abcanalysejava.adapter.MaterialAdapter;
 import timschulz.abcanalysejava.adapter.RechnungAdapter;
 import timschulz.abcanalysejava.database.Database;
-import timschulz.abcanalysejava.model.ABC;
+import timschulz.abcanalysejava.model.ABCXYZ;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -41,6 +41,8 @@ public class MainController {
     @FXML
     private TableColumn<MaterialAdapter, String> anteilColumn;
     @FXML
+    private TableColumn<MaterialAdapter, String> kumAnteilColumn;
+    @FXML
     private TableColumn<MaterialAdapter, String> varK;
 
     @FXML
@@ -55,6 +57,21 @@ public class MainController {
     private Label bLabel;
     @FXML
     private Label cLabel;
+    @FXML
+    private Slider xSlider;
+    @FXML
+    private Slider ySlider;
+    @FXML
+    private Slider zSlider;
+    @FXML
+    private Label xLabel;
+    @FXML
+    private Label yLabel;
+    @FXML
+    private Label zLabel;
+    @FXML
+    private Button resetSlidersButton;
+
 
     public void initialize() {
         Database.loadLieferanten();
@@ -69,18 +86,16 @@ public class MainController {
         klasseColumn.setCellValueFactory(cellData -> cellData.getValue().klasseProperty());
         gesamtwertColumn.setCellValueFactory(cellData -> cellData.getValue().gesamtwertProperty());
         anteilColumn.setCellValueFactory(cellData -> cellData.getValue().anteilProperty());
+        kumAnteilColumn.setCellValueFactory(cellData -> cellData.getValue().kumAnteilProperty());
         varK.setCellValueFactory(cellData -> cellData.getValue().varKProperty());
         materialsTable.setItems(MaterialAdapter.getMaterials());
         MaterialAdapter.createMaterialAdapters();
-        aSlider.setMin(ABC.getB());
-        bSlider.setMax(ABC.getA());
-        cSlider.setMin(ABC.getC());
-        aSlider.setValue(ABC.getA());
-        bSlider.setValue(ABC.getB());
-        cSlider.setValue(ABC.getC());
-        aLabel.setText(ABC.getA() + " %");
-        bLabel.setText(ABC.getB() + " %");
-        cLabel.setText(ABC.getC() + " %");
+
+        aSlider.setValue(ABCXYZ.getA());
+        bSlider.setValue(ABCXYZ.getB());
+        cSlider.setValue(ABCXYZ.getC());
+
+        updateSliders();
 
         aSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() != oldValue.intValue()) {
@@ -97,24 +112,69 @@ public class MainController {
                 handleSlider();
             }
         });
+        xSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() != oldValue.intValue()) {
+                handleSlider();
+            }
+        });
+        ySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() != oldValue.intValue()) {
+                handleSlider();
+            }
+        });
+        zSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() != oldValue.intValue()) {
+                handleSlider();
+            }
+        });
+    }
+
+    private void updateSliders() {
+        aSlider.setMin(ABCXYZ.getB());
+        bSlider.setMax(ABCXYZ.getA());
+        bSlider.setMin(ABCXYZ.getC());
+        cSlider.setMax(ABCXYZ.getB());
+        aLabel.setText(ABCXYZ.getA() + " %");
+        bLabel.setText(ABCXYZ.getB() + " %");
+        cLabel.setText(ABCXYZ.getC() + " %");
+
+        xSlider.setMin(0);
+        ySlider.setMin(0);
+        xSlider.setMax(ABCXYZ.getY());
+        ySlider.setMin(ABCXYZ.getX());
+        ySlider.setMax(ABCXYZ.getZ());
+        xSlider.setValue(ABCXYZ.getX());
+        ySlider.setValue(ABCXYZ.getY());
+        xLabel.setText(ABCXYZ.getX() + " %");
+        yLabel.setText(ABCXYZ.getY() + " %");
+    }
+
+    public void handleResetSliders() {
+        ABCXYZ.setA(70);
+        ABCXYZ.setB(20);
+        ABCXYZ.setC(10);
+        ABCXYZ.setX(25);
+        ABCXYZ.setY(50);
+        ABCXYZ.setZ(50);
+        updateSliders();
+        MaterialAdapter.createMaterialAdapters();
     }
 
     public void handleSlider() {
-        ABC.setA((int) aSlider.getValue());
-        ABC.setB((int) bSlider.getValue());
-        ABC.setC((int) cSlider.getValue());
-        aLabel.setText(ABC.getA() + " %");
-        bLabel.setText(ABC.getB() + " %");
-        cLabel.setText(ABC.getC() + " %");
-        aSlider.setMin(ABC.getB());
-        bSlider.setMax(ABC.getA());
-        cSlider.setMax(ABC.getB());
+        ABCXYZ.setA((int) aSlider.getValue());
+        ABCXYZ.setB((int) bSlider.getValue());
+        ABCXYZ.setC((int) cSlider.getValue());
+
+        updateSliders();
         MaterialAdapter.createMaterialAdapters();
     }
 
     public void handleDateSelect() {
         LocalDate fromLocalDate = fromDatePicker.getValue();
         LocalDate toLocalDate = toDatePicker.getValue();
+
+        Database.setFrom(Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        Database.setTo(Date.from(toLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         if (fromDatePicker.getValue() != null && toDatePicker.getValue() != null) {
             Date fromDate = Date.from(fromLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());

@@ -1,5 +1,7 @@
 package timschulz.abcanalysejava.model;
 
+import timschulz.abcanalysejava.database.Database;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,21 +44,41 @@ public class Material {
             kumuliert += anteil;
             material.setAnteil(anteil);
             material.setKumAnteil(kumuliert);
-            if(kumuliert <= ABC.getA()+3) {
+            if(kumuliert <= ABCXYZ.getA()+3) {
                 material.setKlasse('A');
-            } else if(kumuliert <= ABC.getA() + ABC.getB()+3) {
+            } else if(kumuliert <= ABCXYZ.getA() + ABCXYZ.getB()+3) {
                 material.setKlasse('B');
             } else {
                 material.setKlasse('C');
             }
-            System.out.println(material.getRechnungen().size());
-            double mittelwert = material.getRechnungen().stream().reduce(
-                    0.0,
-                    (sum, rechnung) -> sum + rechnung.getNetto(),
-                    Double::sum
-            )/material.getRechnungen().size();
-            double varianz = material.getRechnungen().stream().mapToDouble(rechnung -> Math.pow(material.getRechnungen().size(), 2)).sum();
-            double varK = (Math.sqrt(varianz) / mittelwert) * 100;
+            // create map with all 12 months as keys and value is the count of all rechnungen in that month. also differentiate months in different years
+            HashMap<String, Float> monthMap = new HashMap<>();
+            // add month in timespan from Database.getFrom() to Database.getTo()
+            for (int i = Database.getFrom().getYear(); i <= Database.getTo().getYear(); i++) {
+                for (int j = 0; j < 12; j++) {
+                    String month = i + "-" + (j+1);
+                    monthMap.put(month, 0f);
+                }
+            }
+
+
+            for (Rechnung rechnung : material.getRechnungen()) {
+                String month = rechnung.getRechdat().getYear() + "-" + (rechnung.getRechdat().getMonth()+1);
+                if (monthMap.containsKey(month)) {
+                    monthMap.put(month, monthMap.get(month) + rechnung.getNetto());
+                } else {
+                    monthMap.put(month, rechnung.getNetto());
+                }
+            }
+//            System.out.println("monthMap: " + monthMap);
+            double average = monthMap.values().stream().reduce(0f, Float::sum) / (double) monthMap.size();
+//            System.out.println("average: " + average);
+            double varianz = monthMap.values().stream().mapToDouble(value -> Math.pow((value - average), 2)).sum() / (monthMap.values().stream().reduce(0f, Float::sum));
+//            System.out.println("varianz: " + varianz);
+            double standardabweichung = Math.sqrt(varianz);
+//            System.out.println("standardabweichung: " + standardabweichung);
+            double varK = (standardabweichung / average)*100;
+//            System.out.println("varK: " + varK);
             material.setVarK(varK);
         }
     }

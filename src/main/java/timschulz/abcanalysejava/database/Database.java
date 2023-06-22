@@ -18,6 +18,8 @@ import timschulz.abcanalysejava.model.Lieferant;
 import timschulz.abcanalysejava.model.Rechnung;
 
 public class Database {
+    private static Date from;
+    private static Date to;
     private static Connection connection;
     private static  final String CONNECTION_STRING = "jdbc:sqlite:data/database.db";
 
@@ -312,4 +314,53 @@ public class Database {
         }
     }
 
+    public static void setFromToDateofFirstRechnung() {
+        String sql = """
+                SELECT rechnung.rechdat
+                FROM rechnung
+                ORDER BY rechnung.rechdat ASC
+                LIMIT 1;
+                """;
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                setFrom(rs.getDate("rechdat"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void setToToDateofLastRechnung() {
+        String sql = """
+                SELECT rechnung.rechdat
+                FROM rechnung
+                ORDER BY rechnung.rechdat DESC
+                LIMIT 1;
+                """;
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                setTo(rs.getDate("rechdat"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static Date getFrom() {
+        return from;
+    }
+
+    public static void setFrom(Date from) {
+        Database.from = from;
+    }
+
+    public static Date getTo() {
+        return to;
+    }
+
+    public static void setTo(Date to) {
+        Database.to = to;
+    }
 }
